@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ufps.edu.co.dao.SeguirDAO;
 import ufps.edu.co.dao.SeguirPkDAO;
 import ufps.edu.co.dao.TiendaDAO;
+import ufps.edu.co.model.Seguir;
 import ufps.edu.co.model.SeguirPK;
 
 /**
@@ -35,12 +37,12 @@ public class Servicios extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String userid=request.getParameter("userid");
-		SeguirPkDAO seguir=new SeguirPkDAO();
-		List<SeguirPK> lista=seguir.list();
-		for(SeguirPK sp:lista) {
-			if(sp.getCliente()==Integer.parseInt(userid)) {
+		SeguirDAO seguir=new SeguirDAO();
+		List<Seguir> lista=seguir.list();
+		for(Seguir sp:lista) {
+			if(sp.getId().getCliente()==Integer.parseInt(userid)) {
 				TiendaDAO t=new TiendaDAO();
-				request.getRequestDispatcher("vistas/servicios.jsp?tiendaid="+t.find(sp.getTienda()).getId()).forward(request, response);
+				request.getRequestDispatcher("vistas/servicios.jsp?tiendaid="+t.find(sp.getId().getTienda()).getId()).forward(request, response);
 			}
 		}
 	}

@@ -49,7 +49,10 @@ List<Servicio> servicios=new ServicioDAO().list();
         </div>
       </div>
     </div>
-    <%}}%>
+    <%}}
+    %>NO HAY SERVICIO EHHHHH<%
+    %>
+    
   </div>
   <!-- /.row -->
 

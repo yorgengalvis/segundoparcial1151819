@@ -29,6 +29,11 @@ public class Cliente implements Serializable {
 
 	public Cliente() {
 	}
+	
+	public Cliente(String email,String clave) {
+		this.email=email;
+		this.clave=clave;
+	}
 
 	public int getId() {
 		return this.id;

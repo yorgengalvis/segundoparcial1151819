@@ -1,25 +1,29 @@
 package ufps.edu.co.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import ufps.edu.co.dao.ClienteDAO;
+
+import ufps.edu.co.dao.SeguirPkDAO;
+import ufps.edu.co.dao.TiendaDAO;
+import ufps.edu.co.model.SeguirPK;
 
 /**
- * Servlet implementation class Cliente
+ * Servlet implementation class Servicios
  */
-@WebServlet("/Cliente/*")
-public class Cliente extends HttpServlet {
+@WebServlet("/Servicios/*")
+public class Servicios extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Cliente() {
+    public Servicios() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,15 +34,15 @@ public class Cliente extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		String action = request.getParameter("action");
-		//response.getWriter().append("Hola mama"+action).append(request.getContextPath());
-		switch(action) {
-		case "login": request.getRequestDispatcher("vistas/login.jsp").forward(request, response);
-			break;
-		case "registro": request.getRequestDispatcher("vistas/registro.jsp").forward(request, response);
-		break;
+		String userid=request.getParameter("userid");
+		SeguirPkDAO seguir=new SeguirPkDAO();
+		List<SeguirPK> lista=seguir.list();
+		for(SeguirPK sp:lista) {
+			if(sp.getCliente()==Integer.parseInt(userid)) {
+				TiendaDAO t=new TiendaDAO();
+				request.getRequestDispatcher("vistas/servicios.jsp?tiendaid="+t.find(sp.getTienda()).getId()).forward(request, response);
+			}
 		}
-		
 	}
 
 	/**
@@ -46,20 +50,6 @@ public class Cliente extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String action = request.getParameter("action");
-		switch(action) {
-		case "ingresar": 
-			String email=request.getParameter("inputEmail");
-			String password=request.getParameter("inputPassword");
-			ClienteDAO cliented=new ClienteDAO();
-			List<ufps.edu.co.model.Cliente> lista=cliented.list();
-			for(ufps.edu.co.model.Cliente c:lista) {
-				if(c.getEmail().equals(email) && c.getClave().equals(password)) {
-					request.getRequestDispatcher("/Servicios?userid="+c.getId()).forward(request, response);
-				}
-			}
-		break;
-		}
 		doGet(request, response);
 	}
 
